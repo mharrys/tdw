@@ -1,7 +1,7 @@
 package se.mharrys.tdw.article;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import se.mharrys.tdw.author.Author;
 
@@ -10,12 +10,12 @@ import se.mharrys.tdw.author.Author;
  */
 public class ArticleWTF implements Article {
     private int id;
-    private ArrayList<Author> authors;
+    private List<Author> authors;
     private String title;
     private Date published;
     private String body;
 
-    public ArticleWTF(int id, Date published, ArrayList<Author> authors, String title, String body) {
+    public ArticleWTF(int id, Date published, List<Author> authors, String title, String body) {
         this.id = id;
         this.authors = authors;
         this.title = title;
@@ -34,7 +34,7 @@ public class ArticleWTF implements Article {
     }
 
     @Override
-    public ArrayList<Author> getAuthors() {
+    public List<Author> getAuthors() {
         return authors;
     }
 

@@ -1,7 +1,7 @@
 package se.mharrys.tdw.article;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import se.mharrys.tdw.author.Author;
 
@@ -23,7 +23,7 @@ public interface Article {
     /**
      * Return authors.
      */
-    ArrayList<Author> getAuthors();
+    List<Author> getAuthors();
 
     /**
      * Return title.
