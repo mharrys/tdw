@@ -2,10 +2,13 @@ package se.mharrys.tdw;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import se.mharrys.tdw.article.ArticleItem;
+import se.mharrys.tdw.article.ArticleItemWTF;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,14 +17,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main_activity);
 
-        ArrayList<String> items = new ArrayList<>();
-        ArrayAdapter<String> adapterValues = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                items
-        );
+        List<ArticleItem> items = new ArrayList<>();
+        items.add(new ArticleItemWTF(1, "Title 1"));
+        items.add(new ArticleItemWTF(2, "Title 2"));
+        items.add(new ArticleItemWTF(3, "Title 3"));
+
+        ArticleItemAdapter itemsAdapter = new ArticleItemAdapter(this, items);
 
         ListView articlesView = (ListView) findViewById(R.id.articlesView);
-        articlesView.setAdapter(adapterValues);
+        articlesView.setAdapter(itemsAdapter);
     }
 }
