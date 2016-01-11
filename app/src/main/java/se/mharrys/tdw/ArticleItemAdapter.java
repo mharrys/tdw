@@ -12,8 +12,8 @@ import java.util.List;
 import se.mharrys.tdw.article.ArticleItem;
 
 /**
- * The responsibility of this class is to adapt the {@link se.mharrys.article.ArticleItem} class
- * for a list view.
+ * The responsibility of this class is to adapt the {@link se.mharrys.tdw.article.ArticleItem}
+ * class for a list view.
  */
 class ArticleItemAdapter extends BaseAdapter {
     private Context context;
