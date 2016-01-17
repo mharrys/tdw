@@ -1,4 +1,4 @@
-package se.mharrys.tdw.utils;
+package se.mharrys.tdw.remote;
 
 import android.os.AsyncTask;
 
@@ -13,16 +13,16 @@ import java.util.concurrent.ExecutionException;
  * a separate thread.
  */
 public class DownloadFilesTask extends AsyncTask<URL, Void, List<String>> {
-    private Downloader downloader;
+    private DownloaderFactoryImpl factory;
     private IOException error;
 
     /**
      * Construct task.
      *
-     * @param downloader the downloader to use for each remote location
+     * @param factory the factory to create downloader for each remote location
      */
-    public DownloadFilesTask(Downloader downloader) {
-        this.downloader = downloader;
+    public DownloadFilesTask(DownloaderFactoryImpl factory) {
+        this.factory = factory;
     }
 
     /**
@@ -37,7 +37,7 @@ public class DownloadFilesTask extends AsyncTask<URL, Void, List<String>> {
     public List<String> downloadAll(URL... urls) throws ExecutionException, InterruptedException, IOException {
         execute(urls);
         List<String> result = get();
-        if (result == null)
+        if (error != null)
             throw error;
         return result;
     }
@@ -45,12 +45,14 @@ public class DownloadFilesTask extends AsyncTask<URL, Void, List<String>> {
     @Override
     protected List<String> doInBackground(URL... urls) {
         List<String> contents = new ArrayList<>();
+        error = null;
         for (URL url : urls) {
             try {
-                contents.add(downloader.download(url));
+                Downloader downloader = factory.createDownloader(url);
+                contents.add(downloader.download());
             } catch (IOException e) {
                 error = e;
-                return null;
+                break;
             }
         }
         return contents;

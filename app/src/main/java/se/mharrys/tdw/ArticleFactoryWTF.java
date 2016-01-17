@@ -13,8 +13,8 @@ import java.util.concurrent.ExecutionException;
 
 import se.mharrys.tdw.article.ArticleItem;
 import se.mharrys.tdw.article.ArticleItemWTF;
-import se.mharrys.tdw.utils.DownloadFilesTask;
-import se.mharrys.tdw.utils.DownloaderImpl;
+import se.mharrys.tdw.remote.DownloadFilesTask;
+import se.mharrys.tdw.remote.DownloaderFactoryImpl;
 
 public class ArticleFactoryWTF implements ArticleFactory {
     private final String baseURL = "http://thedailywtf.com/api/";
@@ -23,7 +23,7 @@ public class ArticleFactoryWTF implements ArticleFactory {
     public List<ArticleItem> createRecent(int count) throws InitializationException {
         List<ArticleItem> items = new ArrayList<>();
         try {
-            DownloadFilesTask task = new DownloadFilesTask(new DownloaderImpl());
+            DownloadFilesTask task = new DownloadFilesTask(new DownloaderFactoryImpl());
             URL recent = new URL(baseURL + "articles/recent/" + count);
             List<String> strings = task.downloadAll(recent);
             JSONArray fetched = new JSONArray(strings.get(0));
