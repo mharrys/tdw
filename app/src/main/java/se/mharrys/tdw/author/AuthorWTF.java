@@ -6,7 +6,7 @@ package se.mharrys.tdw.author;
 public class AuthorWTF implements Author {
     private String name;
 
-    AuthorWTF(String name) {
+    public AuthorWTF(String name) {
         this.name = name;
     }
 
