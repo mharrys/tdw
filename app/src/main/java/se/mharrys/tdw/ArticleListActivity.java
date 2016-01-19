@@ -1,15 +1,14 @@
 package se.mharrys.tdw;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.ListActivity;
 import android.os.Bundle;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
 
 import se.mharrys.tdw.article.ArticleItem;
 
-public class MainActivity extends AppCompatActivity {
+public class ArticleListActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (items != null) {
             ArticleItemAdapter itemsAdapter = new ArticleItemAdapter(this, items);
-            ListView articlesView = (ListView) findViewById(R.id.articlesView);
-            articlesView.setAdapter(itemsAdapter);
+            setListAdapter(itemsAdapter);
         }
     }
 }
