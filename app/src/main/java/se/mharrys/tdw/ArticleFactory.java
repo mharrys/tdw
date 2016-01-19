@@ -2,6 +2,7 @@ package se.mharrys.tdw;
 
 import java.util.List;
 
+import se.mharrys.tdw.article.Article;
 import se.mharrys.tdw.article.ArticleItem;
 
 /**
@@ -17,4 +18,13 @@ public interface ArticleFactory {
      * @return list of recent article items
      */
     List<ArticleItem> createRecent(int count) throws InitializationException;
+
+    /**
+     * Create article from id.
+     *
+     * @param id the id of article to create
+     * @throws InitializationException If fatal error occurs during creation
+     * @return article instance
+     */
+    Article createFromId(int id) throws InitializationException;
 }
