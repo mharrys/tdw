@@ -1,7 +1,10 @@
 package se.mharrys.tdw;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -9,6 +12,8 @@ import java.util.List;
 import se.mharrys.tdw.article.ArticleItem;
 
 public class ArticleListActivity extends ListActivity {
+    private final int RECENT_COUNT = 15;
+    private List<ArticleItem> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,10 +21,9 @@ public class ArticleListActivity extends ListActivity {
         setContentView(R.layout.layout_main_activity);
 
         ArticleFactory factory;
-        List<ArticleItem> items = null;
         try {
             factory = new ArticleFactoryWTF();
-            items = factory.createRecent(15);
+            items = factory.createRecent(RECENT_COUNT);
         } catch (InitializationException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -28,5 +32,16 @@ public class ArticleListActivity extends ListActivity {
             ArticleItemAdapter itemsAdapter = new ArticleItemAdapter(this, items);
             setListAdapter(itemsAdapter);
         }
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Intent articleIntent = new Intent(
+                ArticleListActivity.this,
+                ArticleActivity.class
+        );
+        articleIntent.putExtra("articleId", items.get(position).getId());
+        startActivity(articleIntent);
     }
 }
