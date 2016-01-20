@@ -17,12 +17,11 @@ public class ArticleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_article_activity);
 
-        Bundle extras = getIntent().getExtras();
-
         Article article = null;
         ArticleFactory factory;
         try {
             factory = new ArticleFactoryWTF();
+            Bundle extras = getIntent().getExtras();
             article = factory.createFromId(extras.getInt("articleId"));
         } catch (InitializationException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
