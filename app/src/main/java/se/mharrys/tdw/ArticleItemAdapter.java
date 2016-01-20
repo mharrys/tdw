@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import se.mharrys.tdw.article.ArticleItem;
@@ -20,10 +21,34 @@ class ArticleItemAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<ArticleItem> items;
 
+    public ArticleItemAdapter(Context context) {
+        this(context, new ArrayList<ArticleItem>());
+    }
+
     public ArticleItemAdapter(Context context, List<ArticleItem> items) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
         this.items = items;
+    }
+
+    /**
+     * Add article item. It will notify that data set has changed.
+     *
+     * @param item the item to add
+     */
+    public void addItem(ArticleItem item) {
+        items.add(item);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Add list of article items. It will notify that data set has changed.
+     *
+     * @param items the list of article items
+     */
+    public void addItems(List<ArticleItem> items) {
+        this.items.addAll(items);
+        notifyDataSetChanged();
     }
 
     @Override

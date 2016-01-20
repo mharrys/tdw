@@ -1,7 +1,8 @@
-package se.mharrys.tdw;
+package se.mharrys.tdw.article.factory;
 
 import java.util.List;
 
+import se.mharrys.tdw.InitializationException;
 import se.mharrys.tdw.article.Article;
 import se.mharrys.tdw.article.ArticleItem;
 
@@ -27,4 +28,14 @@ public interface ArticleFactory {
      * @return article instance
      */
     Article createFromId(int id) throws InitializationException;
+
+    /**
+     * Create list of articles previous to specified article id.
+     *
+     * @param id the id to start from
+     * @param count the number of articles to return
+     * @throws InitializationException If fatal error occurs during creation
+     * @return  list of articles previous to specified article id
+     */
+    List<ArticleItem> createAfterId(int id, int count) throws InitializationException;
 }

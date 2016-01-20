@@ -1,4 +1,4 @@
-package se.mharrys.tdw;
+package se.mharrys.tdw.article.factory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,26 +13,42 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
+import se.mharrys.tdw.InitializationException;
 import se.mharrys.tdw.article.Article;
 import se.mharrys.tdw.article.ArticleItem;
 import se.mharrys.tdw.article.ArticleItemWTF;
 import se.mharrys.tdw.article.ArticleWTF;
 import se.mharrys.tdw.author.Author;
 import se.mharrys.tdw.author.AuthorWTF;
-import se.mharrys.tdw.remote.DownloadFilesTask;
+import se.mharrys.tdw.remote.Downloader;
+import se.mharrys.tdw.remote.DownloaderFactory;
 import se.mharrys.tdw.remote.DownloaderFactoryImpl;
 
 public class ArticleFactoryWTF implements ArticleFactory {
-    private final String baseURL = "http://thedailywtf.com/api/";
+    private final URL base;
+    private final URL baseRecent;
+    private final URL baseId;
+    private DownloaderFactory factory;
+
+    public ArticleFactoryWTF() throws InitializationException {
+        try {
+            this.base = new URL("http://thedailywtf.com/api/");
+            this.baseRecent = new URL(base, "articles/recent/");
+            this.baseId = new URL(base, "articles/id/");
+        } catch (MalformedURLException e) {
+            throw new InitializationException(
+                    "Unable to construct API URLs", e);
+        }
+        this.factory = new DownloaderFactoryImpl();
+    }
 
     @Override
     public List<ArticleItem> createRecent(int count) throws InitializationException {
         List<ArticleItem> items = new ArrayList<>();
         try {
-            List<String> strings = downloadData(baseURL + "articles/recent/" + count);
-            JSONArray fetched = new JSONArray(strings.get(0));
+            URL recentUrl = createWithRecent(count);
+            JSONArray fetched = new JSONArray(download(recentUrl));
             for (int i = 0; i < fetched.length(); i++) {
                 JSONObject articleObj = fetched.getJSONObject(i);
                 items.add(createArticleItem(articleObj));
@@ -47,13 +63,33 @@ public class ArticleFactoryWTF implements ArticleFactory {
     @Override
     public Article createFromId(int id) throws InitializationException {
         try {
-            List<String> strings = downloadData(baseURL + "articles/id/" + id);
-            JSONObject obj = new JSONObject(strings.get(0));
+            URL idUrl = createWithId(id);
+            JSONObject obj = new JSONObject(download(idUrl));
             return createArticle(obj);
         } catch (JSONException e) {
             throw new InitializationException(
                     "Unable to parse data from remote location as JSON object", e);
         }
+    }
+
+    @Override
+    public List<ArticleItem> createAfterId(int id, int count) throws InitializationException {
+        List<ArticleItem> items = new ArrayList<>();
+        try {
+            // There is no support for pagination in the API, this is a workaround
+            int next = id;
+            for (int i = 0; i < count; i++) {
+                URL idUrl = createWithId(next);
+                JSONObject articleObj = new JSONObject(download(idUrl));
+                items.add(createArticleItem(articleObj));
+                next = articleObj.getInt("PreviousArticleId");
+            }
+        } catch (JSONException e) {
+            throw new InitializationException(
+                    "Unable to parse data from remote location as JSON object", e);
+        }
+        items.remove(0); // don't include specified id
+        return items;
     }
 
     private Date createDate(String date) throws InitializationException {
@@ -105,27 +141,37 @@ public class ArticleFactoryWTF implements ArticleFactory {
         }
     }
 
-    private List<String> downloadData(String url) throws InitializationException {
-        DownloadFilesTask task = new DownloadFilesTask(new DownloaderFactoryImpl());
+    private URL createWithRecent(int count) throws InitializationException {
+        URL recentUrl;
         try {
-            List<String> data = new ArrayList<>();
-            List<byte[]> rawData = task.downloadAll(new URL(url));
-            for (byte[] bytes : rawData) {
-                data.add(new String(bytes));
-            }
-            return data;
+            recentUrl = new URL(baseRecent, "" + count);
         } catch (MalformedURLException e) {
             throw new InitializationException(
-                    "Unable to construct API URL for recent articles", e);
-        } catch (ExecutionException e) {
+                    "Unable to create API URL for recent articles", e);
+        }
+        return recentUrl;
+    }
+
+    private URL createWithId(int id) throws InitializationException {
+        URL idUrl;
+        try {
+            idUrl = new URL(baseId, "" + id);
+        } catch (MalformedURLException e) {
             throw new InitializationException(
-                    "Error occurred while downloading data" , e);
-        } catch (InterruptedException e) {
-            throw new InitializationException(
-                    "Downloading of data was interrupted", e);
-        } catch (IOException e) {
+                    "Unable to create API URL for article id", e);
+        }
+        return idUrl;
+    }
+
+    private String download(URL url) throws InitializationException {
+        String data;
+        try {
+            Downloader downloader = factory.createDownloader(url);
+            data = new String(downloader.download());
+        }catch (IOException e) {
             throw new InitializationException(
                     "Unable to retrieve data from remote location", e);
         }
+        return data;
     }
 }
