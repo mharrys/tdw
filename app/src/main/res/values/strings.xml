@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TDW</string>
+    <string name="article_meta">by %1$s on %2$s</string>
 </resources>
