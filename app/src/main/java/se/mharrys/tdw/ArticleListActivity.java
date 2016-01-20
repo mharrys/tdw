@@ -18,7 +18,7 @@ public class ArticleListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_main_activity);
+        setContentView(R.layout.layout_article_list_activity);
 
         ArticleFactory factory;
         try {
