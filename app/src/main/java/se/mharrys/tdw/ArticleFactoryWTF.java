@@ -91,13 +91,11 @@ public class ArticleFactoryWTF implements ArticleFactory {
     }
 
     private Article createArticle(JSONObject articleObj) throws InitializationException {
-        List<Author> authors = new ArrayList<>();
-        authors.add(createAuthor(articleObj));
         try {
             return new ArticleWTF(
                     articleObj.getInt("Id"),
                     createDate(articleObj.getString("PublishedDate")),
-                    authors,
+                    createAuthor(articleObj),
                     articleObj.getString("Title"),
                     articleObj.getString("BodyHtml")
             );

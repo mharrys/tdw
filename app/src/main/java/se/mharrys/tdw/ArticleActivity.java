@@ -6,6 +6,8 @@ import android.text.Html;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+
 import se.mharrys.tdw.article.Article;
 
 public class ArticleActivity extends Activity {
@@ -30,12 +32,16 @@ public class ArticleActivity extends Activity {
             TextView articleTitle = (TextView) findViewById(R.id.articleTitle);
             articleTitle.setText(article.getTitle());
             TextView articleMeta = (TextView) findViewById(R.id.articleMeta);
-            final String name = article.getAuthors().get(0).getName();
-            final String date = article.getPublishedDate().toString();
-            final String meta = "by " + name + " on " + date;
-            articleMeta.setText(meta);
+            articleMeta.setText(buildMeta(article));
             TextView articleBody = (TextView) findViewById(R.id.articleBody);
             articleBody.setText(Html.fromHtml(article.getBody()));
         }
+    }
+
+    private String buildMeta(Article article) {
+        final String name = article.getAuthor().getName();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        final String date = dateFormat.format(article.getPublishedDate());
+        return getResources().getString(R.string.article_meta, name, date);
     }
 }

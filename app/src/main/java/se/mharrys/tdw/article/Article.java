@@ -1,7 +1,6 @@
 package se.mharrys.tdw.article;
 
 import java.util.Date;
-import java.util.List;
 
 import se.mharrys.tdw.author.Author;
 
@@ -21,9 +20,9 @@ public interface Article {
     Date getPublishedDate();
 
     /**
-     * Return authors.
+     * Return author.
      */
-    List<Author> getAuthors();
+    Author getAuthor();
 
     /**
      * Return title.
