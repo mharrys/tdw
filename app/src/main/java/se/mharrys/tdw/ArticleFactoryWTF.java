@@ -108,7 +108,12 @@ public class ArticleFactoryWTF implements ArticleFactory {
     private List<String> downloadData(String url) throws InitializationException {
         DownloadFilesTask task = new DownloadFilesTask(new DownloaderFactoryImpl());
         try {
-            return task.downloadAll(new URL(url));
+            List<String> data = new ArrayList<>();
+            List<byte[]> rawData = task.downloadAll(new URL(url));
+            for (byte[] bytes : rawData) {
+                data.add(new String(bytes));
+            }
+            return data;
         } catch (MalformedURLException e) {
             throw new InitializationException(
                     "Unable to construct API URL for recent articles", e);

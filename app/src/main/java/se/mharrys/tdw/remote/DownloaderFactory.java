@@ -9,7 +9,7 @@ import java.net.URL;
 public interface DownloaderFactory {
 
     /**
-     * Create downloader for remote location.
+     * Create string downloader for remote location.
      *
      * @param url the remote location
      * @return downloader

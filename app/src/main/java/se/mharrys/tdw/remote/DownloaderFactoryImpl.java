@@ -1,14 +1,15 @@
 package se.mharrys.tdw.remote;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class DownloaderFactoryImpl implements DownloaderFactory {
     private final int connectTimeout;
     private final int readTimeout;
+    private final int chunkSize;
 
     /**
      * Construct downloader factory with default timeout values.
@@ -16,23 +17,24 @@ public class DownloaderFactoryImpl implements DownloaderFactory {
     public DownloaderFactoryImpl() {
         connectTimeout = 10000;
         readTimeout = 2000;
+        chunkSize = 4096;
     }
 
     /**
      * Construct downloader factory with specified timeout values.
      */
-    public DownloaderFactoryImpl(int connectTimeout, int readTimeout) {
+    public DownloaderFactoryImpl(int connectTimeout, int readTimeout, int chunkSize) {
         this.connectTimeout = connectTimeout;
         this.readTimeout = readTimeout;
+        this.chunkSize = chunkSize;
     }
 
     public Downloader createDownloader(URL url) throws IOException {
         URLConnection conn = url.openConnection();
         conn.setConnectTimeout(connectTimeout);
         conn.setReadTimeout(readTimeout);
-        InputStreamReader input = new InputStreamReader(conn.getInputStream());
-        BufferedReader reader = new BufferedReader(input);
-        StringBuilder builder = new StringBuilder();
-        return new DownloaderImpl(reader, builder);
+        InputStream input = conn.getInputStream();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        return new DownloaderImpl(input, output, new byte[chunkSize]);
     }
 }

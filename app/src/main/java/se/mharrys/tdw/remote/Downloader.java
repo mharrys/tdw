@@ -13,5 +13,5 @@ public interface Downloader {
      * @throws IOException if something occurs while retrieving content from remote location.
      * @return data from remote location
      */
-    String download() throws IOException;
+    byte[] download() throws IOException;
 }

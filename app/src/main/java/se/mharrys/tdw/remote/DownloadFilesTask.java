@@ -12,8 +12,8 @@ import java.util.concurrent.ExecutionException;
  * The responsibility of this class is to download data from one or more remote locations in
  * a separate thread.
  */
-public class DownloadFilesTask extends AsyncTask<URL, Void, List<String>> {
-    private DownloaderFactoryImpl factory;
+public class DownloadFilesTask extends AsyncTask<URL, Void, List<byte[]>> {
+    private DownloaderFactory factory;
     private IOException error;
 
     /**
@@ -21,7 +21,7 @@ public class DownloadFilesTask extends AsyncTask<URL, Void, List<String>> {
      *
      * @param factory the factory to create downloader for each remote location
      */
-    public DownloadFilesTask(DownloaderFactoryImpl factory) {
+    public DownloadFilesTask(DownloaderFactory factory) {
         this.factory = factory;
     }
 
@@ -34,17 +34,17 @@ public class DownloadFilesTask extends AsyncTask<URL, Void, List<String>> {
      * @throws InterruptedException If the current thread was interrupted while waiting
      * @throws IOException If data was not retrieved from remote location
      */
-    public List<String> downloadAll(URL... urls) throws ExecutionException, InterruptedException, IOException {
+    public List<byte[]> downloadAll(URL... urls) throws ExecutionException, InterruptedException, IOException {
         execute(urls);
-        List<String> result = get();
+        List<byte[]> result = get();
         if (error != null)
             throw error;
         return result;
     }
 
     @Override
-    protected List<String> doInBackground(URL... urls) {
-        List<String> contents = new ArrayList<>();
+    protected List<byte[]> doInBackground(URL... urls) {
+        List<byte[]> contents = new ArrayList<>();
         error = null;
         for (URL url : urls) {
             try {
