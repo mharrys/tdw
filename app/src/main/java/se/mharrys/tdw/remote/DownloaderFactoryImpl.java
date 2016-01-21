@@ -15,8 +15,8 @@ public class DownloaderFactoryImpl implements DownloaderFactory {
      * Construct downloader factory with default timeout values.
      */
     public DownloaderFactoryImpl() {
-        connectTimeout = 10000;
-        readTimeout = 2000;
+        connectTimeout = 15000;
+        readTimeout = 5000;
         chunkSize = 4096;
     }
 
