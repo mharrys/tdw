@@ -29,8 +29,8 @@ public class CreateArticleTask<T> extends AsyncTask<Void, Void, T> {
     }
 
     @Override
-    protected void onPostExecute(T items) {
-        super.onPostExecute(items);
-        listener.onTaskCompleted(items, error);
+    protected void onPostExecute(T result) {
+        super.onPostExecute(result);
+        listener.onTaskCompleted(result, error);
     }
 }
