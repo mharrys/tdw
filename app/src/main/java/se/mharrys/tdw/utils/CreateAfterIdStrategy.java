@@ -1,9 +1,10 @@
-package se.mharrys.tdw.article.factory;
+package se.mharrys.tdw.utils;
 
 import java.util.List;
 
 import se.mharrys.tdw.InitializationException;
 import se.mharrys.tdw.article.ArticleItem;
+import se.mharrys.tdw.ArticleFactory;
 
 /**
  * The responsibility of this class is to encapsulate the creation of article items after a

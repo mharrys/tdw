@@ -1,4 +1,4 @@
-package se.mharrys.tdw.article.factory;
+package se.mharrys.tdw;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import se.mharrys.tdw.InitializationException;
 import se.mharrys.tdw.article.Article;
 import se.mharrys.tdw.article.ArticleItem;
 import se.mharrys.tdw.article.ArticleItemWTF;

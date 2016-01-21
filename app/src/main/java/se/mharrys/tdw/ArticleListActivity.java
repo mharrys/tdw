@@ -11,11 +11,9 @@ import android.widget.Toast;
 import java.util.List;
 
 import se.mharrys.tdw.article.ArticleItem;
-import se.mharrys.tdw.article.factory.ArticleFactory;
-import se.mharrys.tdw.article.factory.ArticleFactoryWTF;
-import se.mharrys.tdw.article.factory.CreateAfterIdStrategy;
+import se.mharrys.tdw.utils.CreateAfterIdStrategy;
+import se.mharrys.tdw.utils.CreateRecentStrategy;
 import se.mharrys.tdw.utils.CreateArticleTask;
-import se.mharrys.tdw.article.factory.CreateRecentStrategy;
 import se.mharrys.tdw.utils.OnTaskComplete;
 
 public class ArticleListActivity extends ListActivity implements AbsListView.OnScrollListener, OnTaskComplete<List<ArticleItem>> {

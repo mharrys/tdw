@@ -9,10 +9,8 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 
 import se.mharrys.tdw.article.Article;
-import se.mharrys.tdw.article.factory.ArticleFactory;
-import se.mharrys.tdw.article.factory.ArticleFactoryWTF;
 import se.mharrys.tdw.utils.CreateArticleTask;
-import se.mharrys.tdw.article.factory.CreateFromIdStrategy;
+import se.mharrys.tdw.utils.CreateFromIdStrategy;
 import se.mharrys.tdw.utils.OnTaskComplete;
 
 public class ArticleActivity extends Activity implements OnTaskComplete<Article> {

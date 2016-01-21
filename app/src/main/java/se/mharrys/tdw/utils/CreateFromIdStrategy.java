@@ -1,7 +1,8 @@
-package se.mharrys.tdw.article.factory;
+package se.mharrys.tdw.utils;
 
 import se.mharrys.tdw.InitializationException;
 import se.mharrys.tdw.article.Article;
+import se.mharrys.tdw.ArticleFactory;
 
 public class CreateFromIdStrategy implements CreateArticleStrategy<Article> {
     private int id;

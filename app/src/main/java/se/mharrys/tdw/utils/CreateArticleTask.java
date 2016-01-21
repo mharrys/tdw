@@ -3,7 +3,6 @@ package se.mharrys.tdw.utils;
 import android.os.AsyncTask;
 
 import se.mharrys.tdw.InitializationException;
-import se.mharrys.tdw.article.factory.CreateArticleStrategy;
 
 /**
  * The responsibility of this class is to run a article creation strategy on a separate thread.

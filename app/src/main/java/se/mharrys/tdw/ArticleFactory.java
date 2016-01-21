@@ -1,4 +1,4 @@
-package se.mharrys.tdw.article.factory;
+package se.mharrys.tdw;
 
 import java.util.List;
 
