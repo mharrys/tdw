@@ -31,6 +31,10 @@ public class ArticleFactoryWTF implements ArticleFactory {
     private DownloaderFactory factory;
 
     public ArticleFactoryWTF() throws InitializationException {
+        this(new DownloaderFactoryImpl());
+    }
+
+    public ArticleFactoryWTF(DownloaderFactory factory) throws InitializationException {
         try {
             this.base = new URL("http://thedailywtf.com/api/");
             this.baseRecent = new URL(base, "articles/recent/");
@@ -39,7 +43,7 @@ public class ArticleFactoryWTF implements ArticleFactory {
             throw new InitializationException(
                     "Unable to construct API URLs", e);
         }
-        this.factory = new DownloaderFactoryImpl();
+        this.factory = factory;
     }
 
     @Override
