@@ -71,14 +71,14 @@ class ArticleItemAdapter extends BaseAdapter {
         View row;
 
         if (convertView == null) {
-            row = inflater.inflate(android.R.layout.simple_list_item_1, null);
+            row = inflater.inflate(R.layout.layout_article_list_item, null);
         } else {
             row = convertView;
         }
 
         ArticleItem current = getItem(position);
-        TextView text = (TextView) row.findViewById(android.R.id.text1);
-        text.setText(current.getTitle());
+        TextView title = (TextView) row.findViewById(R.id.article_list_item_title);
+        title.setText(current.getTitle());
 
         return row;
     }
