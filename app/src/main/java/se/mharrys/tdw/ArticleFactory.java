@@ -2,7 +2,6 @@ package se.mharrys.tdw;
 
 import java.util.List;
 
-import se.mharrys.tdw.InitializationException;
 import se.mharrys.tdw.article.Article;
 import se.mharrys.tdw.article.ArticleItem;
 
