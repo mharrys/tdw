@@ -1,9 +1,14 @@
 package se.mharrys.tdw;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -12,8 +17,8 @@ import java.util.List;
 
 import se.mharrys.tdw.article.ArticleItem;
 import se.mharrys.tdw.utils.CreateAfterIdStrategy;
-import se.mharrys.tdw.utils.CreateRecentStrategy;
 import se.mharrys.tdw.utils.CreateArticleTask;
+import se.mharrys.tdw.utils.CreateRecentStrategy;
 import se.mharrys.tdw.utils.OnTaskComplete;
 
 public class ArticleListActivity extends ListActivity implements AbsListView.OnScrollListener, OnTaskComplete<List<ArticleItem>> {
@@ -23,6 +28,7 @@ public class ArticleListActivity extends ListActivity implements AbsListView.OnS
     private ArticleFactory factory;
     private CreateArticleTask<List<ArticleItem>> task;
     private ArticleItemAdapter itemsAdapter;
+    private View loadingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,23 @@ public class ArticleListActivity extends ListActivity implements AbsListView.OnS
             itemsAdapter = new ArticleItemAdapter(this);
             setListAdapter(itemsAdapter);
             runCreateRecentTask();
+
+            // constant spin around center
+            RotateAnimation rotate = new RotateAnimation(
+                    0.0f, 360.0f,
+                    Animation.RELATIVE_TO_SELF, 0.5f,
+                    Animation.RELATIVE_TO_SELF, 0.5f
+            );
+            rotate.setDuration(800);
+            rotate.setRepeatMode(Animation.RESTART);
+            rotate.setRepeatCount(Animation.INFINITE);
+            rotate.setInterpolator(new LinearInterpolator());
+
+            // footer to display when fetching more data
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            loadingView = inflater.inflate(R.layout.layout_article_list_item_loading, null);
+            loadingView.startAnimation(rotate);
+
             getListView().setOnScrollListener(this);
         }
     }
@@ -61,6 +84,7 @@ public class ArticleListActivity extends ListActivity implements AbsListView.OnS
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         final boolean lastVisible = totalItemCount - (firstVisibleItem + visibleItemCount) == 0;
         if (task == null && lastVisible) {
+            getListView().addFooterView(loadingView);
             final int id = itemsAdapter.getItem(itemsAdapter.getCount() - 1).getId();
             runCreateAfterIdTask(id);
         }
@@ -73,6 +97,7 @@ public class ArticleListActivity extends ListActivity implements AbsListView.OnS
             itemsAdapter.addItems(items);
         }
         task = null;
+        getListView().removeFooterView(loadingView);
     }
 
     private void runCreateRecentTask() {
