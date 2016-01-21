@@ -39,11 +39,11 @@ public class ArticleActivity extends Activity implements OnTaskComplete<Article>
         if (e != null) {
             showError(e.getMessage());
         } else {
-            TextView articleTitle = (TextView) findViewById(R.id.articleTitle);
+            TextView articleTitle = (TextView) findViewById(R.id.article_title);
             articleTitle.setText(article.getTitle());
-            TextView articleMeta = (TextView) findViewById(R.id.articleMeta);
+            TextView articleMeta = (TextView) findViewById(R.id.article_meta);
             articleMeta.setText(buildMeta(article));
-            TextView articleBody = (TextView) findViewById(R.id.articleBody);
+            TextView articleBody = (TextView) findViewById(R.id.article_body);
             articleBody.setText(Html.fromHtml(article.getBody()));
         }
         task = null;

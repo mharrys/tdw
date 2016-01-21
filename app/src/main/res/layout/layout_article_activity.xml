@@ -17,19 +17,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:id="@+id/articleTitle" />
+                android:id="@+id/article_title" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/articleMeta"
+                android:id="@+id/article_meta"
                 android:paddingBottom="15dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/articleBody" />
+                android:id="@+id/article_body" />
 
         </LinearLayout>
     </ScrollView>
